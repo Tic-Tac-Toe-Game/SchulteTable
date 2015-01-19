@@ -3,6 +3,20 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Schulte Table</title>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
+
     <script src="jquery-2.1.3.js"></script>
     <script src="underscore.js"></script>
     <script>
@@ -66,10 +80,6 @@
             }
 
             var $shuffleFilledTable = getFilledTable(size);
-
-            $shuffleFilledTable.attr({
-                "border": 1
-            });
 
             $("body").append($shuffleFilledTable);
         });
