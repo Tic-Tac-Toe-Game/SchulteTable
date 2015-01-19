@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Schulte Table</title>
     <script src="jquery-2.1.3.js"></script>
+    <script src="underscore.js"></script>
     <script>
         /**
          * TODO: circle
@@ -33,14 +34,16 @@
                 return $table;
             }
 
-            function getMap(size) {
+            function getShuffleMap(size) {
                 var map = {};
-                var index = 1;
+                var index = 0;
+
+                var values = _.shuffle(_.range(size * size));
 
                 for (var y = 1; y <= size; y++) {
                     var row = {};
                     for (var x = 1; x <= size; x++) {
-                        row[x] = index++;
+                        row[x] = values[index++] + 1;
                     }
                     map[y] = row;
                 }
@@ -51,7 +54,7 @@
             function getFilledTable(size) {
                 var $table = getTable(size);
 
-                var map = getMap(size);
+                var map = getShuffleMap(size);
 
                 for (var y in map) {
                     for (var x in map[y]) {
@@ -62,8 +65,13 @@
                 return $table;
             }
 
+            var $shuffleFilledTable = getFilledTable(size);
 
-            $("body").append(getFilledTable(size));
+            $shuffleFilledTable.attr({
+                "border": 1
+            });
+
+            $("body").append($shuffleFilledTable);
         });
     </script>
 </head>
