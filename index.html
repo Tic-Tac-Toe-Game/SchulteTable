@@ -82,9 +82,15 @@
                 return $table;
             }
 
-            var $shuffleFilledTable = getFilledTable(size);
+            var $schulte = $("#js-schulte");
 
-            $("#js-schulte").html($shuffleFilledTable);
+            function resetSchulteTable() {
+                $schulte.html(getFilledTable(size));
+            };
+
+            resetSchulteTable();
+
+            setInterval(resetSchulteTable, 45 * 1000);
         });
     </script>
 </head>
