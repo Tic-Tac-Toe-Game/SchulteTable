@@ -5,6 +5,9 @@
     <title>Schulte Table</title>
 
     <style>
+        * {
+            font-size: 25px;
+        }
         table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
@@ -81,11 +84,11 @@
 
             var $shuffleFilledTable = getFilledTable(size);
 
-            $("body").append($shuffleFilledTable);
+            $("#js-schulte").html($shuffleFilledTable);
         });
     </script>
 </head>
 <body>
-
+    <div id="js-schulte" align="center"></div>
 </body>
 </html>
