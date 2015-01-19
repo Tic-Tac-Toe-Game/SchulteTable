@@ -21,6 +21,9 @@
         td.schulte-choose {
            cursor: pointer;
         }
+        td.schulte-choose-success {
+            background-color: forestgreen;
+        }
     </style>
 
     <script src="jquery-2.1.3.js"></script>
@@ -75,6 +78,20 @@
                 return map;
             }
 
+            function schulteChooseEvent($table) {
+                var currentChoose = 1;
+
+                $table.find("td").click(function() {
+                    var $self = $(this);
+
+                    if ($self.html() == currentChoose) {
+                        currentChoose++;
+
+                        $self.addClass("schulte-choose-success");
+                    }
+                });
+            }
+
             function getFilledTable(size) {
                 var $table = getTable(size);
 
@@ -85,6 +102,8 @@
                         $table.find("#" + getItemId(y, x)).html(map[y][x]);
                     }
                 }
+
+                schulteChooseEvent($table);
 
                 return $table;
             }
