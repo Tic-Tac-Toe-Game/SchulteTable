@@ -18,6 +18,9 @@
         td {
             text-align: center;
         }
+        td.schulte-choose {
+           cursor: pointer;
+        }
     </style>
 
     <script src="jquery-2.1.3.js"></script>
@@ -33,6 +36,12 @@
                 return "js-item" + y + "-" + x;
             }
 
+            function getChoose(y, x) {
+                return $("<td>")
+                        .attr("id", getItemId(y, x))
+                        .addClass("schulte-choose");
+            }
+
             function getTable(size) {
                 var $table = $("<table>");
 
@@ -40,9 +49,7 @@
                     var $tr = $("<tr>");
 
                     for (var x = 1; x <= size; x++) {
-                        var $td = $("<td>");
-                        $td.attr("id", getItemId(y, x));
-                        $tr.append($td);
+                        $tr.append(getChoose(y, x));
                     }
 
                     $table.append($tr);
