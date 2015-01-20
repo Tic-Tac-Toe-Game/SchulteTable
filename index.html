@@ -28,95 +28,107 @@
 
     <script src="jquery-2.1.3.js"></script>
     <script src="underscore.js"></script>
+    <script src="backbone.js"></script>
     <script>
         /**
          * TODO: circle
          */
         $(document).ready(function() {
+
+            var SchulteTableView =  Backbone.View.extend({
+                el: "#js-schulte",
+
+                initialize: function(size) {
+                    this.render(size);
+                },
+
+                render: function(size) {
+                    this.$el.html(this.getFilledTable(size));
+                },
+
+                getItemId: function(y, x) {
+                    return "js-item" + y + "-" + x;
+                },
+
+                getChoose: function(y, x) {
+                    return $("<td>")
+                        .attr("id", this.getItemId(y, x))
+                        .addClass("schulte-choose");
+                },
+
+                getTable: function(size) {
+                    var $table = $("<table>");
+
+                    for (var y = 1; y <= size; y++) {
+                        var $tr = $("<tr>");
+
+                        for (var x = 1; x <= size; x++) {
+                            $tr.append(this.getChoose(y, x));
+                        }
+
+                        $table.append($tr);
+                    }
+
+                    return $table;
+                },
+
+                getShuffleMap: function(size) {
+                    var map = {};
+                    var index = 0;
+
+                    var values = _.shuffle(_.range(size * size));
+
+                    for (var y = 1; y <= size; y++) {
+                        var row = {};
+                        for (var x = 1; x <= size; x++) {
+                            row[x] = values[index++] + 1;
+                        }
+                        map[y] = row;
+                    }
+
+                    return map;
+                },
+
+                schulteChooseEvent: function($table) {
+                    var currentChoose = 1;
+
+                    $table.find("td").click(function() {
+                        var $self = $(this);
+
+                        if ($self.html() == currentChoose) {
+                            currentChoose++;
+
+                            $self.addClass("schulte-choose-success");
+                        }
+                    });
+                },
+
+                getFilledTable: function(size) {
+                    var $table = this.getTable(size);
+
+                    var map = this.getShuffleMap(size);
+
+                    for (var y in map) {
+                        for (var x in map[y]) {
+                            $table.find("#" + this.getItemId(y, x)).html(map[y][x]);
+                        }
+                    }
+
+                    this.schulteChooseEvent($table);
+
+                    return $table;
+                }
+            });
+
             var size = 5;
 
-            function getItemId(y, x) {
-                return "js-item" + y + "-" + x;
-            }
-
-            function getChoose(y, x) {
-                return $("<td>")
-                        .attr("id", getItemId(y, x))
-                        .addClass("schulte-choose");
-            }
-
-            function getTable(size) {
-                var $table = $("<table>");
-
-                for (var y = 1; y <= size; y++) {
-                    var $tr = $("<tr>");
-
-                    for (var x = 1; x <= size; x++) {
-                        $tr.append(getChoose(y, x));
-                    }
-
-                    $table.append($tr);
-                }
-
-                return $table;
-            }
-
-            function getShuffleMap(size) {
-                var map = {};
-                var index = 0;
-
-                var values = _.shuffle(_.range(size * size));
-
-                for (var y = 1; y <= size; y++) {
-                    var row = {};
-                    for (var x = 1; x <= size; x++) {
-                        row[x] = values[index++] + 1;
-                    }
-                    map[y] = row;
-                }
-
-                return map;
-            }
-
-            function schulteChooseEvent($table) {
-                var currentChoose = 1;
-
-                $table.find("td").click(function() {
-                    var $self = $(this);
-
-                    if ($self.html() == currentChoose) {
-                        currentChoose++;
-
-                        $self.addClass("schulte-choose-success");
-                    }
-                });
-            }
-
-            function getFilledTable(size) {
-                var $table = getTable(size);
-
-                var map = getShuffleMap(size);
-
-                for (var y in map) {
-                    for (var x in map[y]) {
-                        $table.find("#" + getItemId(y, x)).html(map[y][x]);
-                    }
-                }
-
-                schulteChooseEvent($table);
-
-                return $table;
-            }
-
-            var $schulte = $("#js-schulte");
-
             function resetSchulteTable() {
-                $schulte.html(getFilledTable(size));
+                new SchulteTableView(size);
             };
 
             resetSchulteTable();
 
-            setInterval(resetSchulteTable, 45 * 1000);
+            setInterval(resetSchulteTable, 45 * 100);
         });
     </script>
 </head>
