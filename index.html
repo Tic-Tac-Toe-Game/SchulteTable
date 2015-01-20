@@ -35,8 +35,23 @@
          */
         $(document).ready(function() {
 
+            var SchulteCellView = Backbone.View.extend({
+                tagName: "td",
+                className: "schulte-choose",
+
+                initialize: function(id, value) {
+                    this.$el.attr("id", id).html(value);
+                },
+
+                render: function() {
+                    return this.$el;
+                }
+            });
+
             var SchulteTableView =  Backbone.View.extend({
                 el: "#js-schulte",
+
+                matrix: {},
 
                 initialize: function(size) {
                     this.render(size);
@@ -51,9 +66,7 @@
                 },
 
                 getChoose: function(y, x) {
-                    return $("<td>")
-                        .attr("id", this.getItemId(y, x))
-                        .addClass("schulte-choose");
+                    return new SchulteCellView(this.getItemId(y, x), this.matrix[y][x]);
                 },
 
                 getTable: function(size) {
@@ -63,7 +76,7 @@
                         var $tr = $("<tr>");
 
                         for (var x = 1; x <= size; x++) {
-                            $tr.append(this.getChoose(y, x));
+                            $tr.append(this.getChoose(y, x).render());
                         }
 
                         $table.append($tr);
@@ -104,15 +117,9 @@
                 },
 
                 getFilledTable: function(size) {
+                    this.matrix = this.getShuffleMap(size);
+
                     var $table = this.getTable(size);
-
-                    var map = this.getShuffleMap(size);
-
-                    for (var y in map) {
-                        for (var x in map[y]) {
-                            $table.find("#" + this.getItemId(y, x)).html(map[y][x]);
-                        }
-                    }
 
                     this.schulteChooseEvent($table);
 
