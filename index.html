@@ -39,12 +39,8 @@
                 tagName: "td",
                 className: "schulte-choose",
 
-                initialize: function(id, value) {
-                    this.$el.attr("id", id).html(value);
-                },
-
-                render: function() {
-                    return this.$el;
+                render: function(value) {
+                    return this.$el.html(value);
                 }
             });
 
@@ -61,22 +57,18 @@
                     this.$el.html(this.getFilledTable(size));
                 },
 
-                getItemId: function(y, x) {
-                    return "js-item" + y + "-" + x;
-                },
-
-                getChoose: function(y, x) {
-                    return new SchulteCellView(this.getItemId(y, x), this.matrix[y][x]);
-                },
-
                 getTable: function(size) {
                     var $table = $("<table>");
+
+                    var event = this.getChooseEvent();
 
                     for (var y = 1; y <= size; y++) {
                         var $tr = $("<tr>");
 
                         for (var x = 1; x <= size; x++) {
-                            $tr.append(this.getChoose(y, x).render());
+                            var cell = new SchulteCellView();
+
+                            $tr.append(cell.render(this.matrix[y][x]).click(event));
                         }
 
                         $table.append($tr);
@@ -102,10 +94,10 @@
                     return map;
                 },
 
-                schulteChooseEvent: function($table) {
+                getChooseEvent: function() {
                     var currentChoose = 1;
 
-                    $table.find("td").click(function() {
+                    return function() {
                         var $self = $(this);
 
                         if ($self.html() == currentChoose) {
@@ -113,17 +105,13 @@
 
                             $self.addClass("schulte-choose-success");
                         }
-                    });
+                    };
                 },
 
                 getFilledTable: function(size) {
                     this.matrix = this.getShuffleMap(size);
 
-                    var $table = this.getTable(size);
-
-                    this.schulteChooseEvent($table);
-
-                    return $table;
+                    return this.getTable(size);
                 }
             });
 
