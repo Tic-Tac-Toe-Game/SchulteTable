@@ -60,9 +60,14 @@
 
                     var event = this.getChooseEvent();
 
-                    var index = 0;
+                    var generator = (function() {
+                        var values = _.shuffle(_.range(size * size)),
+                            index = 0;
 
-                    var values = _.shuffle(_.range(size * size));
+                        return function() {
+                            return values[index++] + 1;
+                        };
+                    })();
 
                     for (var y = 1; y <= size; y++) {
                         var $tr = $("<tr>");
@@ -70,7 +75,7 @@
                         for (var x = 1; x <= size; x++) {
                             var cell = new SchulteCellView();
 
-                            $tr.append(cell.render(values[index++]).click(event));
+                            $tr.append(cell.render(generator).click(event));
                         }
 
                         $table.append($tr);
