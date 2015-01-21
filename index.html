@@ -47,8 +47,6 @@
             var SchulteTableView =  Backbone.View.extend({
                 el: "#js-schulte",
 
-                matrix: {},
-
                 initialize: function(size) {
                     this.render(size);
                 },
@@ -57,10 +55,14 @@
                     this.$el.html(this.getFilledTable(size));
                 },
 
-                getTable: function(size) {
+                getFilledTable: function(size) {
                     var $table = $("<table>");
 
                     var event = this.getChooseEvent();
+
+                    var index = 0;
+
+                    var values = _.shuffle(_.range(size * size));
 
                     for (var y = 1; y <= size; y++) {
                         var $tr = $("<tr>");
@@ -68,30 +70,13 @@
                         for (var x = 1; x <= size; x++) {
                             var cell = new SchulteCellView();
 
-                            $tr.append(cell.render(this.matrix[y][x]).click(event));
+                            $tr.append(cell.render(values[index++]).click(event));
                         }
 
                         $table.append($tr);
                     }
 
                     return $table;
-                },
-
-                getShuffleMap: function(size) {
-                    var map = {};
-                    var index = 0;
-
-                    var values = _.shuffle(_.range(size * size));
-
-                    for (var y = 1; y <= size; y++) {
-                        var row = {};
-                        for (var x = 1; x <= size; x++) {
-                            row[x] = values[index++] + 1;
-                        }
-                        map[y] = row;
-                    }
-
-                    return map;
                 },
 
                 getChooseEvent: function() {
@@ -106,12 +91,6 @@
                             $self.addClass("schulte-choose-success");
                         }
                     };
-                },
-
-                getFilledTable: function(size) {
-                    this.matrix = this.getShuffleMap(size);
-
-                    return this.getTable(size);
                 }
             });
 
