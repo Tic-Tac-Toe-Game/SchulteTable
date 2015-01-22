@@ -12,8 +12,7 @@
     <script src="three.js"></script>
     <script>
         $(document).ready(function() {
-            var camera, scene, renderer;
-            var geometry, material, mesh;
+            var camera, scene, renderer, cubeMatrix, size = 5;
 
             var cubes = [];
 
@@ -30,9 +29,6 @@
                 };
             })();
 
-            init();
-            animate();
-
             function getCube() {
                 var geometry = new THREE.BoxGeometry(50, 50, 50),
                     material = new THREE.MeshBasicMaterial({
@@ -43,49 +39,69 @@
                 return new THREE.Mesh(geometry, material);
             }
 
-            function matrix(scene, size) {
+            function getCubeMatrixList(size) {
+                var list = [];
                 for (var x = 1; x <= size; x++) {
                     for (var y = 1; y <= size; y++) {
                         var cube = getCube();
                         cube.position.x = 50 * x;
                         cube.position.y = 50 * y;
-                        cube.position.z = 50;
-                        scene.add(cube);
-                        cubes.push(cube);
+                        cube.position.z = 50 * (x + y);
+                        list.push(cube);
                     }
                 }
+                return list;
             }
 
-            function init() {
+            var delayElementAdding = (function() {
 
+                function addElement(scene, elements, index) {
+                    var element = elements[index];
+                    if (element) {
+                        setTimeout(function() {
+                            scene.add(element);
+
+                            addElement(scene, elements, ++index)
+                        }, 1000);
+                    }
+                }
+
+                return function(scene, elements) {
+                    addElement(scene, elements, 0);
+                }
+            })();
+
+            function init() {
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
                 camera.position.z = 1000;
 
                 scene = new THREE.Scene();
 
-                matrix(scene, 5);
+                cubeMatrix = getCubeMatrixList(size);
+
+                delayElementAdding(scene, cubeMatrix);
 
                 renderer = new THREE.WebGLRenderer();
                 renderer.setSize(window.innerWidth, window.innerHeight);
 
                 document.body.appendChild(renderer.domElement);
-
             }
 
             function animate() {
 
                 requestAnimationFrame(animate);
 
-                cubes.forEach(function(cube) {
+                cubeMatrix.forEach(function(cube) {
                     cube.rotation.z += 0.03 * capoeira();
                     cube.rotation.y += 0.02 * capoeira();
                     cube.rotation.x += 0.01 * capoeira();
                 });
 
-
                 renderer.render(scene, camera);
-
             }
+
+            init();
+            animate();
         });
     </script>
 </head>
