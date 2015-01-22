@@ -27,20 +27,33 @@
                     if (result < 3) return filter = result;
                     if (filter > 1) return filter--;
                     return filter;
-            }
+                };
             })();
 
             init();
             animate();
 
             function getCube() {
-                var geometry = new THREE.BoxGeometry(100, 100, 100),
+                var geometry = new THREE.BoxGeometry(50, 50, 50),
                     material = new THREE.MeshBasicMaterial({
                         color: 0x00ff00,
                         wireframe: true
                     });
 
                 return new THREE.Mesh(geometry, material);
+            }
+
+            function matrix(scene, size) {
+                for (var x = 1; x <= size; x++) {
+                    for (var y = 1; y <= size; y++) {
+                        var cube = getCube();
+                        cube.position.x = 50 * x;
+                        cube.position.y = 50 * y;
+                        cube.position.z = 50;
+                        scene.add(cube);
+                        cubes.push(cube);
+                    }
+                }
             }
 
             function init() {
@@ -50,14 +63,7 @@
 
                 scene = new THREE.Scene();
 
-                for (var index = 1; index < 8; index++) {
-                    var cube = getCube();
-                    cube.position.x = 100 * index;
-                    cube.position.y = 100;
-                    cube.position.z = 100;
-                    scene.add(cube);
-                    cubes.push(cube);
-                }
+                matrix(scene, 5);
 
                 renderer = new THREE.WebGLRenderer();
                 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -71,6 +77,7 @@
                 requestAnimationFrame(animate);
 
                 cubes.forEach(function(cube) {
+                    cube.rotation.z += 0.03 * capoeira();
                     cube.rotation.y += 0.02 * capoeira();
                     cube.rotation.x += 0.01 * capoeira();
                 });
