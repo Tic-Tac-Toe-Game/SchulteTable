@@ -15,6 +15,8 @@
             var camera, scene, renderer;
             var geometry, material, mesh;
 
+            var cubes = [];
+
             var capoeira = (function () {
                 var current = 1,
                     filter;
@@ -31,6 +33,16 @@
             init();
             animate();
 
+            function getCube() {
+                var geometry = new THREE.BoxGeometry(100, 100, 100),
+                    material = new THREE.MeshBasicMaterial({
+                        color: 0x00ff00,
+                        wireframe: true
+                    });
+
+                return new THREE.Mesh(geometry, material);
+            }
+
             function init() {
 
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
@@ -38,14 +50,14 @@
 
                 scene = new THREE.Scene();
 
-                geometry = new THREE.BoxGeometry(700, 700, 700);
-                material = new THREE.MeshBasicMaterial({
-                    color: 0x00ff00,
-                    wireframe: true
-                });
-
-                mesh = new THREE.Mesh(geometry, material);
-                scene.add(mesh);
+                for (var index = 1; index < 8; index++) {
+                    var cube = getCube();
+                    cube.position.x = 100 * index;
+                    cube.position.y = 100;
+                    cube.position.z = 100;
+                    scene.add(cube);
+                    cubes.push(cube);
+                }
 
                 renderer = new THREE.WebGLRenderer();
                 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -58,8 +70,11 @@
 
                 requestAnimationFrame(animate);
 
-                mesh.rotation.x += 0.01 * capoeira();
-                mesh.rotation.y += 0.02 * capoeira();
+                cubes.forEach(function(cube) {
+                    cube.rotation.y += 0.02 * capoeira();
+                    cube.rotation.x += 0.01 * capoeira();
+                });
+
 
                 renderer.render(scene, camera);
 
