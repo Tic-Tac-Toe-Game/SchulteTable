@@ -33,7 +33,7 @@
             function getCube() {
                 var geometry = new THREE.BoxGeometry(length, length, length),
                     material = new THREE.MeshBasicMaterial({
-                        color: 0x00ff00,
+                        color: 0x000088,
                         wireframe: true
                     });
 
@@ -56,19 +56,23 @@
 
             var delayElementAdding = (function() {
 
-                function addElement(scene, elements, index) {
-                    var element = elements[index];
-                    if (element) {
-                        setTimeout(function() {
-                            scene.add(element);
+                var delay = 5000,
+                    index = 1;
 
-                            addElement(scene, elements, ++index)
-                        }, 1);
-                    }
+                function getDelay() {
+                    return delay / (index += 0.1);
+                }
+
+                function addElement(scene, element) {
+                    setTimeout(function() {
+                        scene.add(element);
+                    }, getDelay());
                 }
 
                 return function(scene, elements) {
-                    addElement(scene, elements, 0);
+                    for (var index in elements) {
+                        addElement(scene, elements[index]);
+                    }
                 }
             })();
 
