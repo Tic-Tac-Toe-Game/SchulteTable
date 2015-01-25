@@ -12,7 +12,8 @@
     <script src="three.js"></script>
     <script>
         $(document).ready(function() {
-            var camera, scene, renderer, cubeMatrix, size = 5;
+            var camera, scene, renderer;
+            var cubeMatrix, size = 25, length = 10;
 
             var cubes = [];
 
@@ -30,7 +31,7 @@
             })();
 
             function getCube() {
-                var geometry = new THREE.BoxGeometry(50, 50, 50),
+                var geometry = new THREE.BoxGeometry(length, length, length),
                     material = new THREE.MeshBasicMaterial({
                         color: 0x00ff00,
                         wireframe: true
@@ -44,9 +45,9 @@
                 for (var x = 1; x <= size; x++) {
                     for (var y = 1; y <= size; y++) {
                         var cube = getCube();
-                        cube.position.x = 50 * x;
-                        cube.position.y = 50 * y;
-                        cube.position.z = 50 * (x + y);
+                        cube.position.x = length * x;
+                        cube.position.y = length * y;
+                        cube.position.z = length * (x + y);
                         list.push(cube);
                     }
                 }
@@ -62,7 +63,7 @@
                             scene.add(element);
 
                             addElement(scene, elements, ++index)
-                        }, 1000);
+                        }, 1);
                     }
                 }
 
