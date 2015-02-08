@@ -43,7 +43,8 @@
                     return function() {
                         return values[index++] + 1;
                     };
-                }
+                },
+                cellDefaultClassName: "schulte-choose"
             };
 
             var SchulteCellModel = Backbone.Model.extend({
@@ -58,20 +59,25 @@
 
             var SchulteCellView = Backbone.View.extend({
                 tagName: "td",
-                className: "schulte-choose",
 
                 initialize: function() {
                     _.bindAll(this, "render");
-                    this.model.bind("change", this.render);
+                    this.model.on("change", this.render);
                 },
 
                 render: function() {
+                    this.$el.removeClass().addClass(app.cellDefaultClassName);
                     return this.$el.html(this.model.get("value"));
                 }
             });
 
             var SchulteTableModel = Backbone.Model.extend({
+                defaults: {
+                    current : 1
+                },
                 reset: function() {
+                    this.set('current', 1);
+
                     var generator = app.getGenerator(this.get("size"));
 
                     this.get("collection").forEach(function(model) {
@@ -118,13 +124,14 @@
                 },
 
                 getChooseEvent: function() {
-                    var currentChoose = 1;
+                    var model = this.model;
 
                     return function() {
                         var $self = $(this);
 
-                        if ($self.html() == currentChoose) {
-                            currentChoose++;
+                        var currentChoose =  model.get("current");
+                        if ($self.html() == model.get("current")) {
+                            model.set("current", currentChoose + 1);
 
                             $self.addClass("schulte-choose-success");
                         }
@@ -145,7 +152,7 @@
 
             setInterval(function() {
                 schulteTableModel.reset();
-            }, 45 * 10);
+            }, 45 * 100);
         });
     </script>
 </head>
