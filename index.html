@@ -67,18 +67,24 @@
 
                 render: function() {
                     return this.$el.html(this.model.get("value"));
-        }
-        });
+                }
+            });
+
+            var SchulteTableModel = Backbone.Model.extend({
+                reset: function() {
+                    var generator = app.getGenerator(this.get("size"));
+
+                    this.get("collection").forEach(function(model) {
+                        model.set('value', generator());
+                    });
+                }
+            });
 
             var SchulteTableView =  Backbone.View.extend({
                 el: "#js-schulte",
 
-                initialize: function(size) {
-                    this.render(size);
-                },
-
-                render: function(size) {
-                    this.$el.html(this.getFilledTable(size));
+                render: function() {
+                    this.$el.html(this.getFilledTable(this.model.get('size')));
                 },
 
                 getFilledTable: function(size) {
@@ -88,13 +94,15 @@
 
                     var generator = app.getGenerator(size);
 
+                    var collection = this.model.get("collection");
+
                     for (var y = 1; y <= size; y++) {
                         var $tr = $("<tr>");
 
                         for (var x = 1; x <= size; x++) {
                             var model = new SchulteCellModel(generator());
 
-                            app.collection.add(model);
+                            collection.add(model);
 
                             var cell = new SchulteCellView({
                                 model: model
@@ -121,23 +129,23 @@
                             $self.addClass("schulte-choose-success");
                         }
                     };
-                },
-
-                reset: function() {
-                    var generator = app.getGenerator(app.size);
-
-                    app.collection.forEach(function(model) {
-                        model.set('value', generator());
-                    });
                 }
             });
 
-            app.collection = new SchulteCellCollection();
-            app.size = 5;
+            var schulteTableModel = new SchulteTableModel({
+                size: 5,
+                collection: new SchulteCellCollection()
+            });
 
-            var schulteTableView = new SchulteTableView(app.size);
+            var schulteTableView = new SchulteTableView({
+                model: schulteTableModel
+            });
 
-            setInterval(schulteTableView.reset, 45 * 100);
+            schulteTableView.render();
+
+            setInterval(function() {
+                schulteTableModel.reset();
+            }, 45 * 10);
         });
     </script>
 </head>
