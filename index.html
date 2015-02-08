@@ -35,10 +35,25 @@
          */
         $(document).ready(function() {
 
+            var app = {
+                getGenerator: function(size) {
+                    var values = _.shuffle(_.range(size * size)),
+                        index = 0;
+
+                    return function() {
+                        return values[index++] + 1;
+                    };
+                }
+            };
+
             var SchulteCellModel = Backbone.Model.extend({
                 initialize: function(value) {
                     this.set('value', value);
                 }
+            });
+
+            var SchulteCellCollection = Backbone.Collection.extend({
+                model: SchulteCellModel
             });
 
             var SchulteCellView = Backbone.View.extend({
@@ -46,13 +61,14 @@
                 className: "schulte-choose",
 
                 initialize: function() {
-                    this.model.bind('change', this.render);
+                    _.bindAll(this, "render");
+                    this.model.bind("change", this.render);
                 },
 
                 render: function() {
-                    return this.$el.html(this.model.get('value'));
-                }
-            });
+                    return this.$el.html(this.model.get("value"));
+        }
+        });
 
             var SchulteTableView =  Backbone.View.extend({
                 el: "#js-schulte",
@@ -70,21 +86,18 @@
 
                     var event = this.getChooseEvent();
 
-                    var generator = (function() {
-                        var values = _.shuffle(_.range(size * size)),
-                            index = 0;
-
-                        return function() {
-                            return values[index++] + 1;
-                        };
-                    })();
+                    var generator = app.getGenerator(size);
 
                     for (var y = 1; y <= size; y++) {
                         var $tr = $("<tr>");
 
                         for (var x = 1; x <= size; x++) {
+                            var model = new SchulteCellModel(generator());
+
+                            app.collection.add(model);
+
                             var cell = new SchulteCellView({
-                                model: new SchulteCellModel(generator())
+                                model: model
                             });
 
                             $tr.append(cell.render().click(event));
@@ -108,18 +121,23 @@
                             $self.addClass("schulte-choose-success");
                         }
                     };
+                },
+
+                reset: function() {
+                    var generator = app.getGenerator(app.size);
+
+                    app.collection.forEach(function(model) {
+                        model.set('value', generator());
+                    });
                 }
             });
 
-            var size = 5;
+            app.collection = new SchulteCellCollection();
+            app.size = 5;
 
-            function resetSchulteTable() {
-                new SchulteTableView(size);
-            };
+            var schulteTableView = new SchulteTableView(app.size);
 
-            resetSchulteTable();
-
-            setInterval(resetSchulteTable, 45 * 100);
+            setInterval(schulteTableView.reset, 45 * 100);
         });
     </script>
 </head>
