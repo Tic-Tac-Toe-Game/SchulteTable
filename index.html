@@ -44,7 +44,8 @@
                         return values[index++] + 1;
                     };
                 },
-                cellDefaultClassName: "schulte-choose"
+                cellDefaultClassName: "schulte-choose",
+                cellChooseClassName: "schulte-choose-success"
             };
 
             var SchulteCellModel = Backbone.Model.extend({
@@ -130,10 +131,10 @@
                         var $self = $(this);
 
                         var currentChoose =  model.get("current");
-                        if ($self.html() == model.get("current")) {
+                        if ($self.html() == currentChoose) {
                             model.set("current", currentChoose + 1);
 
-                            $self.addClass("schulte-choose-success");
+                            $self.addClass(app.cellChooseClassName);
                         }
                     };
                 }
