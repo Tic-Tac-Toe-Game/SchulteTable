@@ -60,15 +60,20 @@
 
             var SchulteCellView = Backbone.View.extend({
                 tagName: "td",
+                className: app.cellDefaultClassName,
 
                 initialize: function() {
-                    _.bindAll(this, "render");
-                    this.model.on("change", this.render);
+                    _.bindAll(this, "reset");
+                    this.model.on("change:value", this.reset);
                 },
 
                 render: function() {
-                    this.$el.removeClass().addClass(app.cellDefaultClassName);
                     return this.$el.html(this.model.get("value"));
+                },
+
+                reset: function() {
+                    this.$el[0].className = app.cellDefaultClassName;
+                    this.render();
                 }
             });
 
@@ -140,8 +145,10 @@
                 }
             });
 
+            app.size = 5;
+
             var schulteTableModel = new SchulteTableModel({
-                size: 5,
+                size: app.size,
                 collection: new SchulteCellCollection()
             });
 
@@ -151,8 +158,25 @@
 
             schulteTableView.render();
 
+            function showTriesCount() {
+                var tries = 0;
+                var selector = "." + app.cellChooseClassName;
+                var length = app.size * app.size;
+
+                (function doTry() {
+                    if ($("." + app.cellChooseClassName).length < length) {
+                        $("." + app.cellDefaultClassName).click();
+                        ++tries;
+                        setTimeout(doTry, 500);
+                    } else {
+                        console.log(tries);
+                    }
+                })();
+            }
+
             setInterval(function() {
                 schulteTableModel.reset();
+                showTriesCount();
             }, 45 * 100);
         });
     </script>
