@@ -35,12 +35,22 @@
          */
         $(document).ready(function() {
 
+            var SchulteCellModel = Backbone.Model.extend({
+                initialize: function(value) {
+                    this.set('value', value);
+                }
+            });
+
             var SchulteCellView = Backbone.View.extend({
                 tagName: "td",
                 className: "schulte-choose",
 
-                render: function(value) {
-                    return this.$el.html(value);
+                initialize: function() {
+                    this.model.bind('change', this.render);
+                },
+
+                render: function() {
+                    return this.$el.html(this.model.get('value'));
                 }
             });
 
@@ -73,9 +83,11 @@
                         var $tr = $("<tr>");
 
                         for (var x = 1; x <= size; x++) {
-                            var cell = new SchulteCellView();
+                            var cell = new SchulteCellView({
+                                model: new SchulteCellModel(generator())
+                            });
 
-                            $tr.append(cell.render(generator).click(event));
+                            $tr.append(cell.render().click(event));
                         }
 
                         $table.append($tr);
