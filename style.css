@@ -1,0 +1,19 @@
+* {
+    font-size: 25px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+}
+td {
+    text-align: center;
+}
+td.schulte-choose {
+    cursor: pointer;
+}
+td.schulte-choose-success {
+    background-color: forestgreen;
+}
