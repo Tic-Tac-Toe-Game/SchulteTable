@@ -12,9 +12,6 @@ define([
          */
 
         var app = {
-            getGenerator: function(size) {
-                return Generator.create(size);
-            },
             cellDefaultClassName: 'schulte-choose',
             cellChooseClassName: 'schulte-choose-success'
         };
@@ -55,7 +52,7 @@ define([
             reset: function() {
                 this.set('current', 1);
 
-                var generator = app.getGenerator(this.get('size'));
+                var generator = Generator.create(this.get('size'));
 
                 this.get('collection').forEach(function(model) {
                     model.set('value', generator());
@@ -75,7 +72,7 @@ define([
 
                 var event = this.getChooseEvent();
 
-                var generator = app.getGenerator(size);
+                var generator = Generator.create(size);
 
                 var collection = this.model.get('collection');
 
