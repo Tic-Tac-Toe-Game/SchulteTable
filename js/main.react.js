@@ -12,7 +12,7 @@ define([
             return React.createElement(
                 'td',
                 CellComponentConfig,
-                this.props.children
+                this.props.value
             );
         }
     });
@@ -25,7 +25,9 @@ define([
                 var columns = [];
                 for (var x = 1; x <= AppConfig.size; x++) {
                     columns.push(
-                        React.createElement(CellClass, null, generator())
+                        React.createElement(CellClass, {
+                            value: generator()
+                        })
                     );
                 }
                 rows.push(
