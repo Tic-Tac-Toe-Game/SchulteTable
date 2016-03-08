@@ -52,7 +52,7 @@ define([
             reset: function() {
                 this.set('current', 1);
 
-                var generator = Generator.create(this.get('size'));
+                var generator = Generator(this.get('size'));
 
                 this.get('collection').forEach(function(model) {
                     model.set('value', generator());
@@ -72,7 +72,7 @@ define([
 
                 var event = this.getChooseEvent();
 
-                var generator = Generator.create(size);
+                var generator = Generator(size);
 
                 var collection = this.model.get('collection');
 
