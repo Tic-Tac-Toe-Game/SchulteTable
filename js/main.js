@@ -1,8 +1,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'generator'
+], function ($, _, Backbone, Generator) {
 
     $(document).ready(function() {
 
@@ -12,12 +13,7 @@ define([
 
         var app = {
             getGenerator: function(size) {
-                var values = _.shuffle(_.range(size * size)),
-                    index = 0;
-
-                return function() {
-                    return values[index++] + 1;
-                };
+                return Generator.create(size);
             },
             cellDefaultClassName: 'schulte-choose',
             cellChooseClassName: 'schulte-choose-success'
