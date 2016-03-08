@@ -2,43 +2,9 @@ define([
     'react',
     'react-dom',
     'generator',
-    'app.config'
-], function (React, ReactDOM, Generator, AppConfig) {
-    var CellComponentConfig = {
-        className: AppConfig.selector.cellDefaultClassName
-    };
-    var CellClass = React.createClass({
-        getInitialState: function () {
-            return {
-                isActive: true
-            };
-        },
-        handleClick: function(event) {
-            this.setState({
-                isActive: false
-            });
-        },
-        getConfig: function () {
-            if (this.state.isActive) {
-                return {
-                    className: AppConfig.selector.cellDefaultClassName,
-                    onClick: this.handleClick
-                };
-            }
-
-            return {
-                className: AppConfig.selector.cellChooseClassName
-            };
-        },
-        render: function () {   
-            return React.createElement(
-                'td',
-                this.getConfig(),
-                this.props.value
-            );
-        }
-    });
-
+    'app.config',
+    'cell.class.react'
+], function (React, ReactDOM, Generator, AppConfig, CellClass) {
     var TableClass = React.createClass({
         render: function () {
             var generator = Generator(AppConfig.size);
