@@ -6,7 +6,8 @@ require.config({
         "react-dom": "vendor/react-dom",
         "generator": "generator",
         "app.config": "app.config",
-        "cell.class.react": "cell.class.react"
+        "cell.class.react": "cell.class.react",
+        "table.class.react": "table.class.react"
     },
 
     shim: {
@@ -22,6 +23,9 @@ require.config({
         },
         "cell.class.react": {
             exports: "CellClass"
+        },
+        "table.class.react": {
+            exports: "TableClass"
         }
     },
 
