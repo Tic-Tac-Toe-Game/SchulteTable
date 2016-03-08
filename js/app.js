@@ -4,7 +4,8 @@ require.config({
         "jquery": "vendor/jquery",
         "underscore": "vendor/underscore",
         "backbone": "vendor/backbone",
-        "generator": "generator"
+        "generator": "generator",
+        "app.config": "app.config"
     },
 
     shim: {
@@ -21,6 +22,9 @@ require.config({
         "generator": {
             deps: ["underscore"],
             exports: "Generator"
+        },
+        "app.config": {
+            exports: "AppConfig"
         }
     },
 

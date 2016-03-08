@@ -2,19 +2,15 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'generator'
-], function ($, _, Backbone, Generator) {
+    'generator',
+    'app.config'
+], function ($, _, Backbone, Generator, AppConfig) {
 
     $(document).ready(function() {
 
         /**
          * TODO: circle
          */
-
-        var app = {
-            cellDefaultClassName: 'schulte-choose',
-            cellChooseClassName: 'schulte-choose-success'
-        };
 
         var SchulteCellModel = Backbone.Model.extend({
             initialize: function(value) {
@@ -28,7 +24,7 @@ define([
 
         var SchulteCellView = Backbone.View.extend({
             tagName: 'td',
-            className: app.cellDefaultClassName,
+            className: AppConfig.selector.cellDefaultClassName,
 
             initialize: function() {
                 _.bindAll(this, 'reset');
@@ -40,7 +36,7 @@ define([
             },
 
             reset: function() {
-                this.$el[0].className = app.cellDefaultClassName;
+                this.$el[0].className = AppConfig.selector.cellDefaultClassName;
                 this.render();
             }
         });
@@ -107,16 +103,14 @@ define([
                     if ($self.html() == currentChoose) {
                         model.set('current', currentChoose + 1);
 
-                        $self.addClass(app.cellChooseClassName);
+                        $self.addClass(AppConfig.selector.cellChooseClassName);
                     }
                 };
             }
         });
 
-        app.size = 5;
-
         var schulteTableModel = new SchulteTableModel({
-            size: app.size,
+            size: AppConfig.size,
             collection: new SchulteCellCollection()
         });
 
@@ -128,11 +122,11 @@ define([
 
         function showTriesCount() {
             var tries = 0;
-            var length = app.size * app.size;
+            var length = AppConfig.size * AppConfig.size;
 
             (function doTry() {
-                if ($('.' + app.cellChooseClassName).length < length) {
-                    $('.' + app.cellDefaultClassName).click();
+                if ($('.' + AppConfig.selector.cellChooseClassName).length < length) {
+                    $('.' + AppConfig.selector.cellDefaultClassName).click();
                     ++tries;
                     setTimeout(doTry, 500);
                 } else {
