@@ -8,10 +8,33 @@ define([
         className: AppConfig.selector.cellDefaultClassName
     };
     var CellClass = React.createClass({
+        getInitialState: function () {
+            return {
+                isActive: true
+            };
+        },
+        handleClick: function(event) {
+            this.setState({
+                isActive: false
+            });
+        },
         render: function () {
+            var config;
+
+            if (this.state.isActive) {
+                config = {
+                    className: AppConfig.selector.cellDefaultClassName,
+                    onClick: this.handleClick
+                }
+            } else {
+                config = {
+                    className: AppConfig.selector.cellChooseClassName
+                }
+            }
+
             return React.createElement(
                 'td',
-                CellComponentConfig,
+                config,
                 this.props.value
             );
         }
