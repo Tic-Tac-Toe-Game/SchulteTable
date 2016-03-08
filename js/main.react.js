@@ -1,17 +1,21 @@
 define([
     'react',
-    'react-dom'
-], function (React, ReactDOM) {
-    var  size = 5;
-
+    'react-dom',
+    'generator',
+    'app.config'
+], function (React, ReactDOM, Generator, AppConfig) {
     var TableClass = React.createClass({
         render: function () {
+            var generator = Generator(AppConfig.size);
             var rows = [];
-            for (var y = 1; y <= size; y++) {
+            var columnConfig = {
+                className: AppConfig.selector.cellDefaultClassName
+            };
+            for (var y = 1; y <= AppConfig.size; y++) {
                 var columns = [];
-                for (var x = 1; x <= size; x++) {
+                for (var x = 1; x <= AppConfig.size; x++) {
                     columns.push(
-                        React.createElement('td', null, 'A')
+                        React.createElement('td', columnConfig, generator())
                     );
                 }
                 rows.push(
