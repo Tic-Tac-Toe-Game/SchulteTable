@@ -18,23 +18,22 @@ define([
                 isActive: false
             });
         },
-        render: function () {
-            var config;
-
+        getConfig: function () {
             if (this.state.isActive) {
-                config = {
+                return {
                     className: AppConfig.selector.cellDefaultClassName,
                     onClick: this.handleClick
-                }
-            } else {
-                config = {
-                    className: AppConfig.selector.cellChooseClassName
-                }
+                };
             }
 
+            return {
+                className: AppConfig.selector.cellChooseClassName
+            };
+        },
+        render: function () {   
             return React.createElement(
                 'td',
-                config,
+                this.getConfig(),
                 this.props.value
             );
         }
