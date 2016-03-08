@@ -1,8 +1,8 @@
 require.config({
 
     paths: {
-        "react": "./react",
-        "react-dom": "./react-dom"
+        "react": "vendor/react",
+        "react-dom": "vendor/react-dom"
     },
 
     // запустить приложение

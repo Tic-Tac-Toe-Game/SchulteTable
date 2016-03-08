@@ -1,9 +1,9 @@
 require.config({
 
     paths: {
-        "jquery": "http://code.jquery.com/jquery-1.11.2",
-        "underscore": "http://underscorejs.org/underscore",
-        "backbone": "http://backbonejs.org/backbone"
+        "jquery": "vendor/jquery",
+        "underscore": "vendor/underscore",
+        "backbone": "vendor/backbone"
     },
 
     shim: {
