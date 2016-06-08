@@ -1,0 +1,11 @@
+{
+    "dependencies": {
+        "react": "^15.1.0",
+        "react-redux": "^4.4.5",
+        "redux": "^3.5.2"
+    },
+    "devDependencies": {
+        "webpack": "^1.13.1"
+    },
+    "license": "MIT"
+}
