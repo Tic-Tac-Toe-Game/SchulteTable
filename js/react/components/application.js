@@ -1,11 +1,10 @@
 import React from 'react';
-import { generate } from 'st/utils/table';
 
-export default class Table extends React.Component {
+import Point from 'st/components/point';
+
+export default class Application extends React.Component {
     render() {
-        const { size } = this.props;
-
-        const sequence = generate(size);
+        const { size, sequence, index } = this.props;
 
         let current = 0;
         let cells = [];
@@ -14,7 +13,13 @@ export default class Table extends React.Component {
 
             for (let r = 0; r < size; ++r) {
                 let value = sequence[current++];
-                rows.push(<td key={r}>{value}</td>);
+                let success = value < index;
+                rows.push(<Point
+                    key={r}
+                    value={value}
+                    onClick={this.props.onClick}
+                    success={success}
+                />);
             }
 
             cells.push(<tr key={c}>{rows}</tr>);

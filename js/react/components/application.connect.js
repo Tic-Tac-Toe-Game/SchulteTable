@@ -5,11 +5,11 @@ import Application from 'st/components/application';
 import events from 'st/constants/application';
 
 function SourceApplication(props) {
-    return <Application />;
+    return <Application {...props} />;
 }
 
-function mapStateToProps({ index }, { size }) {
-    return { index, size }
+function mapStateToProps({ index, sequence }, { size }) {
+    return { index, size, sequence }
 }
 
 function mapDispatchToProps(dispatch) {

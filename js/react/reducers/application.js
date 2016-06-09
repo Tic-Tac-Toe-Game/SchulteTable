@@ -1,7 +1,9 @@
 import events from 'st/constants/application';
+import { generate } from 'st/utils/application';
 
 function reducer(state = {
-    index: 1
+    index: 1,
+    size: 5
 }, action) {
     switch (action.type) {
         case events.CLICK:
@@ -11,8 +13,11 @@ function reducer(state = {
                 });
             }
 
-        default:
             return state;
+        default:
+            return Object.assign({}, state, {
+                sequence: generate(state.size)
+            });
     }
 }
 
