@@ -18,7 +18,7 @@ var plugins = environment === 'production' ? [
 module.exports = {
     context: __dirname + '/js/react',
     entry: {
-        'app': './components/app'
+        'main': './components/main'
     },
 
     output: {
