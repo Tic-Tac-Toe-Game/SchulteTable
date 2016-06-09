@@ -7,9 +7,26 @@ export default class Table extends React.Component {
 
         const sequence = generate(size);
 
+        let content = [];
+
+        let current = 0;
+        let cells = [];
+        for (let c = 0; c < size; ++c) {
+            let rows = [];
+
+            for (let r = 0; r < size; ++r) {
+                let value = sequence[current++];
+                rows.push(<td key={r}>{value}</td>);
+            }
+
+            cells.push(<tr key={c}>{rows}</tr>);
+        }
+
         return (
             <table>
-
+                <tbody>
+                    {cells}
+                </tbody>
             </table>
         );
     }
