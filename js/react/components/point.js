@@ -1,14 +1,26 @@
 import React from 'react';
 
 export default class Default extends React.Component {
+    getCurrent() {
+        if (this.props.success) {
+            return {
+                className: 'schulte-choose-success'
+            }
+        }
+
+        return {
+            className: 'schulte-choose',
+            onClick: () => {
+                this.props.onClick(this.props.value);
+            }
+        };
+    }
+
     render() {
-        const className = this.props.success ? 'schulte-choose-success' : 'schulte-choose';
+        let current = this.getCurrent();
 
         return (
-            <td
-                className={className}
-                onClick={() => {this.props.onClick(this.props.value)}}
-            >
+            <td {...current} >
                 {this.props.value}
             </td>
         );
