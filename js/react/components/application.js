@@ -7,8 +7,6 @@ export default class Table extends React.Component {
 
         const sequence = generate(size);
 
-        let content = [];
-
         let current = 0;
         let cells = [];
         for (let c = 0; c < size; ++c) {
