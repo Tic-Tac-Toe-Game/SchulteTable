@@ -1,6 +1,10 @@
 import React from 'react';
 
 export default class Default extends React.Component {
+    shouldComponentUpdate(newProps) {
+        return this.props.success !== newProps.success || this.props.value !== newProps.value;
+    }
+
     getCurrent() {
         if (this.props.success) {
             return {

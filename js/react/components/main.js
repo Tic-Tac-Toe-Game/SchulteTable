@@ -8,6 +8,12 @@ import ApplicationStore from 'st/reducers/application';
 
 const store = createStore(ApplicationStore);
 
+import { whyDidYouUpdate } from 'why-did-you-update'
+
+if (process.env.NODE_ENV !== 'production') {
+    whyDidYouUpdate(React)
+}
+
 render(
     <Provider store={store}>
         <Application size={5} />
